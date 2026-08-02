@@ -51,3 +51,83 @@
 #include <iostream>
 using namespace std;
 
+// ---------- Function Prototypes ----------
+void printFibonacciTerms(int n);
+bool isFibonacciNumber(int num);
+
+int main() {
+    int choice;
+
+    do {
+        cout << "\n===== Fibonacci Sequence Generator =====" << endl;
+        cout << "1. Print the first N terms" << endl;
+        cout << "2. Check if a number is a Fibonacci number" << endl;
+        cout << "3. Exit" << endl;
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            // ---------- PART A ----------
+            int n;
+            cout << "How many terms? ";
+            cin >> n;
+
+            if (n <= 0) {
+                cout << "Error: N must be a positive integer." << endl;
+                continue;
+            }
+
+            printFibonacciTerms(n);
+
+        } else if (choice == 2) {
+            // ---------- PART B ----------
+            int num;
+            cout << "Enter a number to check: ";
+            cin >> num;
+
+            if (isFibonacciNumber(num))
+                cout << num << " is a Fibonacci number." << endl;
+            else
+                cout << num << " is NOT a Fibonacci number." << endl;
+
+        } else if (choice == 3) {
+            cout << "Exiting program." << endl;
+        } else {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
+
+// ---------- PART A: Print the first N Fibonacci terms ----------
+void printFibonacciTerms(int n) {
+    long long a = 0, b = 1;
+
+    cout << "Fibonacci sequence: ";
+    for (int i = 0; i < n; i++) {
+        cout << a << " ";
+        long long next = a + b;
+        a = b;
+        b = next;
+    }
+    cout << endl;
+}
+
+// ---------- PART B: Check if a number is a Fibonacci number ----------
+bool isFibonacciNumber(int num) {
+    if (num < 0)
+        return false;
+
+    long long a = 0, b = 1;
+
+    // Generate Fibonacci numbers up to (at least) num
+    while (a < num) {
+        long long next = a + b;
+        a = b;
+        b = next;
+    }
+
+    return a == num;
+}
