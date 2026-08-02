@@ -42,3 +42,72 @@
 #include <iostream>
 using namespace std;
 
+const int MAX_SIZE = 100;
+
+// Function prototypes
+int getSum(int arr[], int n);
+double getAverage(int arr[], int n);
+int getMax(int arr[], int n);
+int getMin(int arr[], int n);
+
+int main() {
+    int arr[MAX_SIZE];
+    int n;
+
+    cout << "Enter number of elements (max " << MAX_SIZE << "): ";
+    cin >> n;
+
+    // Validate size
+    if (n <= 0 || n > MAX_SIZE) {
+        cout << "Invalid size. Please enter a value between 1 and " << MAX_SIZE << "." << endl;
+        return 1;
+    }
+
+    cout << "Enter " << n << " numbers:" << endl;
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    // Compute and display statistics
+    cout << "\n--- Statistics ---" << endl;
+    cout << "Sum:     " << getSum(arr, n) << endl;
+    cout << "Average: " << getAverage(arr, n) << endl;
+    cout << "Maximum: " << getMax(arr, n) << endl;
+    cout << "Minimum: " << getMin(arr, n) << endl;
+
+    return 0;
+}
+
+// Returns the sum of all elements
+int getSum(int arr[], int n) {
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+
+// Returns the average of all elements
+double getAverage(int arr[], int n) {
+    return static_cast<double>(getSum(arr, n)) / n;
+}
+
+// Returns the maximum element
+int getMax(int arr[], int n) {
+    int maxVal = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > maxVal)
+            maxVal = arr[i];
+    }
+    return maxVal;
+}
+
+// Returns the minimum element
+int getMin(int arr[], int n) {
+    int minVal = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < minVal)
+            minVal = arr[i];
+    }
+    return minVal;
+}
