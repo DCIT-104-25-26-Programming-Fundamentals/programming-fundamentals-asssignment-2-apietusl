@@ -65,3 +65,184 @@
 #include <string>
 using namespace std;
 
+const int MAX_SIZE = 10;
+
+// ---------- Function Prototypes ----------
+void readMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols);
+void displayMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols, const string& label);
+
+void transposeMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols,
+                      int result[MAX_SIZE][MAX_SIZE]);
+void addMatrices(int a[MAX_SIZE][MAX_SIZE], int b[MAX_SIZE][MAX_SIZE],
+                  int result[MAX_SIZE][MAX_SIZE], int rows, int cols);
+void multiplyMatrices(int a[MAX_SIZE][MAX_SIZE], int b[MAX_SIZE][MAX_SIZE],
+                       int result[MAX_SIZE][MAX_SIZE], int m, int n, int p);
+
+// ---------- Main ----------
+int main() {
+    int choice;
+
+    do {
+        cout << "\n===== Matrix Operations Menu =====" << endl;
+        cout << "1. Transpose a Matrix" << endl;
+        cout << "2. Add Two Matrices" << endl;
+        cout << "3. Multiply Two Matrices" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            // ---------- PART A: Transpose ----------
+            int matrix[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+            int rows, cols;
+
+            cout << "Enter number of rows: ";
+            cin >> rows;
+            cout << "Enter number of columns: ";
+            cin >> cols;
+
+            if (rows <= 0 || rows > MAX_SIZE || cols <= 0 || cols > MAX_SIZE) {
+                cout << "Invalid dimensions. Must be between 1 and " << MAX_SIZE << "." << endl;
+                continue;
+            }
+
+            cout << "Enter elements of the matrix:" << endl;
+            readMatrix(matrix, rows, cols);
+
+            displayMatrix(matrix, rows, cols, "Original Matrix");
+            transposeMatrix(matrix, rows, cols, result);
+            displayMatrix(result, cols, rows, "Transposed Matrix");
+
+        } else if (choice == 2) {
+            // ---------- PART B: Addition ----------
+            int a[MAX_SIZE][MAX_SIZE], b[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+            int rows, cols;
+
+            cout << "Enter number of rows: ";
+            cin >> rows;
+            cout << "Enter number of columns: ";
+            cin >> cols;
+
+            if (rows <= 0 || rows > MAX_SIZE || cols <= 0 || cols > MAX_SIZE) {
+                cout << "Invalid dimensions. Must be between 1 and " << MAX_SIZE << "." << endl;
+                continue;
+            }
+
+            cout << "Enter elements of Matrix A:" << endl;
+            readMatrix(a, rows, cols);
+            cout << "Enter elements of Matrix B (same size):" << endl;
+            readMatrix(b, rows, cols);
+
+            displayMatrix(a, rows, cols, "Matrix A");
+            displayMatrix(b, rows, cols, "Matrix B");
+
+            addMatrices(a, b, result, rows, cols);
+            displayMatrix(result, rows, cols, "Sum (A + B)");
+
+        } else if (choice == 3) {
+            // ---------- PART C: Multiplication ----------
+            int a[MAX_SIZE][MAX_SIZE], b[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+            int m, n, n2, p;
+
+            cout << "Matrix A dimensions:" << endl;
+            cout << "Enter number of rows (M): ";
+            cin >> m;
+            cout << "Enter number of columns (N): ";
+            cin >> n;
+
+            if (m <= 0 || m > MAX_SIZE || n <= 0 || n > MAX_SIZE) {
+                cout << "Invalid dimensions for A. Must be between 1 and " << MAX_SIZE << "." << endl;
+                continue;
+            }
+
+            cout << "Enter elements of Matrix A:" << endl;
+            readMatrix(a, m, n);
+
+            cout << "\nMatrix B dimensions:" << endl;
+            cout << "Enter number of rows (must equal " << n << "): ";
+            cin >> n2;
+            cout << "Enter number of columns (P): ";
+            cin >> p;
+
+            if (n2 != n) {
+                cout << "Error: Columns of A (" << n << ") must equal rows of B (" << n2 << ")." << endl;
+                continue;
+            }
+            if (p <= 0 || p > MAX_SIZE) {
+                cout << "Invalid column count for B. Must be between 1 and " << MAX_SIZE << "." << endl;
+                continue;
+            }
+
+            cout << "Enter elements of Matrix B:" << endl;
+            readMatrix(b, n, p);
+
+            displayMatrix(a, m, n, "Matrix A");
+            displayMatrix(b, n, p, "Matrix B");
+
+            multiplyMatrices(a, b, result, m, n, p);
+            displayMatrix(result, m, p, "Product (A x B)");
+
+        } else if (choice == 4) {
+            cout << "Exiting program." << endl;
+        } else {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
+
+// ---------- Reads a matrix element by element ----------
+void readMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << "Enter element [" << i << "][" << j << "]: ";
+            cin >> matrix[i][j];
+        }
+    }
+}
+
+// ---------- Displays a matrix in a neat, aligned grid ----------
+void displayMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols, const string& label) {
+    cout << "\n" << label << ":" << endl;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << setw(5) << matrix[i][j];
+        }
+        cout << endl;
+    }
+}
+
+// ---------- PART A: Transpose ----------
+void transposeMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols,
+                      int result[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[j][i] = matrix[i][j];
+        }
+    }
+}
+
+// ---------- PART B: Addition ----------
+void addMatrices(int a[MAX_SIZE][MAX_SIZE], int b[MAX_SIZE][MAX_SIZE],
+                  int result[MAX_SIZE][MAX_SIZE], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+}
+
+// ---------- PART C: Multiplication ----------
+void multiplyMatrices(int a[MAX_SIZE][MAX_SIZE], int b[MAX_SIZE][MAX_SIZE],
+                       int result[MAX_SIZE][MAX_SIZE], int m, int n, int p) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < p; j++) {
+            result[i][j] = 0;
+            for (int k = 0; k < n; k++) {
+                result[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+}
